@@ -1,0 +1,29 @@
+Q.1. Retrieve the full name and email of all customers who joined after January 1, 2023.
+Ans- select firstname,email from customers where joindate > '2023-01-01';
+
+Q.2. Find the total amount of completed orders for each customer.
+Ans- select custID, sum(orderamount) as total_amount from orders where orderstatus='completed' group by custid;
+
+Q.3. List all unresolved support tickets (Status = 'Open' or 'In Progress') along with the customer's name.
+Ans- select s.ticketid,s.status,c.firstname,c.lastname from supportticket as s inner join customers as c on s.custid=c.custid where s.status in ('open','In progress');
+
+Q.4. Retrieve the most recent interaction for each customer.
+Ans- select i.interactionid,c.firstname,c.lastname,max(i.interactiondate) from interactions as i inner join customers as c on c.custid=i.customerid group by i.customerID;
+
+Q.5. Count the number of customers in each country.
+Ans- select firstname,lastname,country,count(*) as customer_count from customers group by country;
+
+Q.6. List customers who have placed no orders.
+Ans- select c.firstname,c.lastname,o.orderid from customers as c inner join orders as o on c.custid=o.custid where o.orderid is null;
+
+Q.7-Identify customers who have both unresolved support tickets and pending orders. 
+Ans- select c.firstname,c.lastname,c.phone from customers as c inner join orders as o on o.custid=c.custid inner join supportticket as s on c.custid=s.custid where s.status='unresolved' and o.orderstatus='pending';
+
+Q.8- Calculate the average order amount for each order status. 
+Ans- select orderstatus,avg(orderamount) as avg_order from orders group by orderstatus;
+
+Q.9- List all customers who have interacted with the company via email in the past month. 
+Ans- select c.custid,c.firstname,c.lastname,i.interactiontype from customers as c inner join interactions as i on c.custid=i.customerid where interactiondate > '2025-05-01';
+
+Q-10. Show the top 5 customers with the highest total order amount. 
+Ans- select c.custid,c.firstname,c.lastname,max(o.orderamount) as total_amount from customers as c inner join orders as o on c.custid=o.custid group by o.orderamount desc limit 5 offset 0;
